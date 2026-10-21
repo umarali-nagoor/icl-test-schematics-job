@@ -9,3 +9,15 @@ func main() {
 	}
 	log.Printf("job completed jobId=%s", jobID)
 }
+
+func runSteps(steps []*Step, log *Logger) error {
+	for _, step := range steps {
+		log.Infof("executing step: %+v", step)
+		if err := step.Run(); err != nil {
+			log.Errorf("step failed, config: %+v error: %v", step, err)
+			return err
+		}
+		log.Infof("step completed: %+v", step)
+	}
+	return nil
+}

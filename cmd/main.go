@@ -9,3 +9,15 @@ func main() {
 	}
 	log.Printf("job completed jobId=%s", jobID)
 }
+
+func watchJobStatus(jobID string, client JobClient, log *Logger) {
+	for {
+		job, err := client.Get(jobID)
+		if err != nil {
+			log.Errorf("status poll failed for job %s: %v", jobID, err)
+		} else {
+			log.Infof("job status: %+v", job)
+		}
+		time.Sleep(2 * time.Second)
+	}
+}
